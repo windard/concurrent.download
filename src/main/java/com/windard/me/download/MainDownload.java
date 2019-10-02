@@ -12,6 +12,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import me.tongfei.progressbar.ProgressBar;
 import me.tongfei.progressbar.ProgressBarBuilder;
 import me.tongfei.progressbar.ProgressBarStyle;
+import org.apache.commons.httpclient.util.URIUtil;
 
 /**
  * @author windard
@@ -32,12 +33,14 @@ public class MainDownload {
             new LinkedBlockingQueue<Runnable>(12800),  threadFactory);
 
         String requestUrl = args[0];
+        String filename = new URL(requestUrl).getPath().substring(1);
+        requestUrl = URIUtil.encodeQuery(requestUrl);
+
         Long chunkSize = 1024000L;
         if (args.length > 1){
             chunkSize = Long.valueOf(args[1]);
         }
 
-        String filename = new URL(requestUrl).getPath().substring(1);
         File file = new File(filename);
         if (!file.exists() && !file.createNewFile()){
             throw new Exception("创建文件失败");
