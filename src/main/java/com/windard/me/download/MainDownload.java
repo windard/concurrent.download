@@ -33,7 +33,9 @@ public class MainDownload {
             new LinkedBlockingQueue<Runnable>(12800),  threadFactory);
 
         String requestUrl = args[0];
-        String filename = new URL(requestUrl).getPath().substring(1);
+        String urlPath = new URL(requestUrl).getPath();
+        String[] filenames = urlPath.split("/");
+        String filename = filenames[filenames.length -1];
         requestUrl = URIUtil.encodeQuery(requestUrl);
 
         Long chunkSize = 1024000L;
